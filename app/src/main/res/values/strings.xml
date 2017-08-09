@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">home_accountant</string>
     <string name="loading_link_title">Получаем ссылку на текущую форму...</string>
-    <string name="loading_form_tirle">Загружаем форму...</string>
+    <string name="loading_form_title">Загружаем форму...</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.example.mmishak.home_accountant;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.webkit.WebView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,14 +20,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 class GetFormInfoTask extends AsyncTask<String, Integer, String> {
 
-    private String response;
-
     @Override
     protected String doInBackground(String... params) {
 
         try {
             URL url = new URL(params[0]);
-            URLConnection conn = (HttpsURLConnection) url.openConnection();
+            URLConnection conn = url.openConnection();
             conn.connect();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -44,7 +44,22 @@ class GetFormInfoTask extends AsyncTask<String, Integer, String> {
         return null;
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        webView.setVisibility(View.GONE);
+        loadingTitle.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
+        new GetFormTask().execute(s);
+    }
+
     private String parseFormURL(JSONObject json) throws JSONException {
-        return json.getJSONObject("results").getString("form_url");
+        return json.getJSONArray("results").getJSONObject(0).getString("form_url");
     }
 }
